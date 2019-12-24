@@ -1,0 +1,68 @@
+enum Permission {
+  ADMIN
+  USER
+}
+
+enum Expense {
+  TRANSPORTATION
+  OFFICE
+  POSTAGE
+  REFRESHMENTS
+  OTHER
+}
+
+enum BoxType {
+  CURRENT
+  CHANGE
+}
+
+type User {
+  id: ID! @id
+  name: String!
+  email: String! @unique
+  password: String!
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: [Permission!]! @scalarList(strategy: RELATION)
+  createdAt: DateTime @createdAt
+}
+
+type Cashbox {
+  id: ID! @id
+  title: String!
+  subtitle: String!
+  total: Int!
+  currentSpent: Int! @default(value: 0)
+  user: User!
+  createdAt: DateTime @createdAt
+  transactions: [Transaction]! @default()
+}
+
+type Box {
+  id: ID! @id
+  type: BoxType!
+  cashbox: Cashbox!
+  twenties: Int! @default(value: 0)
+  tens: Int! @default(value: 0)
+  fives: Int! @default(value: 0)
+  ones: Int! @default(value: 0)
+  quarters: Int! @default(value: 0)
+  dimes: Int! @default(value: 0)
+  nickels: Int! @default(value: 0)
+  pennies: Int! @default(value: 0)
+  qrolls: Int! @default(value: 0)
+  drolls: Int! @default(value: 0)
+  nrolls: Int! @default(value: 0)
+  prolls: Int! @default(value: 0)
+  total: Int! @default(value: 0)
+}
+
+type Transaction {
+  paidTo: String!
+  expenseType: Expense!
+  amount: Int!
+  index: String!
+  account: String!
+  description: String
+}
+
